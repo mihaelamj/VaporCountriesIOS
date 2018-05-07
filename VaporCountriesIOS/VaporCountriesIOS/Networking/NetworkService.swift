@@ -118,6 +118,16 @@ open class NetworkService {
     request.allHTTPHeaderFields = headers
   }
   
+  private func removeRequest(sessionRequest: SessionRequest) {
+    self.requests.removeValue(forKey: sessionRequest.requestIdentifier)
+  }
+  
+  private func removeRequestsPendingAuthentication(sessionRequest: SessionRequest) {
+    if let index = self.requestsPendingAuthentication.index(of:sessionRequest) {
+      self.requestsPendingAuthentication.remove(at: index)
+    }
+  }
+  
 
   
 // MARK: - Base Actions
@@ -144,6 +154,19 @@ open class NetworkService {
     self.requests[sessionRequest.requestIdentifier] = sessionRequest
 
   }
+  
+  public func cancelRequest(with identifier: String) {
+    if let request = self.requests[identifier] {
+      request.cancel()
+      self.requests.removeValue(forKey: identifier)
+    }
+  }
+  
+  public func resendRequestsPendingAuthentication() {
+    _ = self.requestsPendingAuthentication.map {
+      $0.restart()
+    }
+  }
 
 }
 
@@ -153,12 +176,12 @@ extension NetworkService : SessionRequestProtocol {
   
   private func removeRequestFromCollections(sessionRequest: SessionRequest) {
     if let value = self.requests.removeValue(forKey: sessionRequest.requestIdentifier) {
-      print("The value \(value) was removed.")
+      debugPrint("The value \(value) was removed.")
     }
     
     if let index = self.requestsPendingAuthentication.index(of:sessionRequest) {
       self.requestsPendingAuthentication.remove(at: index)
-      print("The request at index \(index) was removed.")
+      debugPrint("The request at index \(index) was removed.")
     }
   }
   
@@ -168,7 +191,7 @@ extension NetworkService : SessionRequestProtocol {
   
   func sessionRequestFailed(sessionRequest: SessionRequest, error: Error?) {
     if let err = error {
-      print("Error \(err)")
+      debugPrint("Error \(err)")
     }
     removeRequestFromCollections(sessionRequest: sessionRequest)
   }

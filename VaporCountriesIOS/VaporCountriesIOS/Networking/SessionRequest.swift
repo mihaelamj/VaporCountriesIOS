@@ -57,7 +57,7 @@ public class SessionRequest {
     self.task.resume()
   }
   
-// MARK: - Base Actions
+// MARK: - Base 
   
   private func makeDataTask() -> URLSessionDataTask {
     
