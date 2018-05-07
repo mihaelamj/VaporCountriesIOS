@@ -133,7 +133,7 @@ open class NetworkService {
 // MARK: - Base Actions
   
 //  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {
-  public func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping DataTaskResultBlock ) {
+  public func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatuses : [HTTPStatusCode], _ result: @escaping DataTaskResultBlock ) {
 
     //build path
     var request = makeRequest(with: path)
@@ -148,7 +148,7 @@ open class NetworkService {
     buildHTTPHeaders(for: &request)
     
     //make SessionRequest
-    let sessionRequest = SessionRequest(request: request, expectedStatus: expectedStatus, session: self.session, resultBlock: result, delegate: self)
+    let sessionRequest = SessionRequest(request: request, expectedStatuses: expectedStatuses, session: self.session, resultBlock: result, delegate: self)
     
     //save networkRequest in dictionary
     self.requests[sessionRequest.requestIdentifier] = sessionRequest

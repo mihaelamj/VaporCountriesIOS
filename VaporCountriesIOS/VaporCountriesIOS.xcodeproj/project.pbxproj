@@ -18,6 +18,8 @@
 		A962099C20A0BFED00CB8E49 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A962099A20A0BFEC00CB8E49 /* NetworkService.swift */; };
 		A9B792AE20A0C14400F1814E /* Codable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792AD20A0C14300F1814E /* Codable+Tools.swift */; };
 		A9B792B020A0D91B00F1814E /* Array+Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792AF20A0D91B00F1814E /* Array+Objects.swift */; };
+		A9B792B320A0F02200F1814E /* NetworkService+Countries.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792B220A0F02200F1814E /* NetworkService+Countries.swift */; };
+		A9B792B520A0F05500F1814E /* NetworkService+REST.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792B420A0F05500F1814E /* NetworkService+REST.swift */; };
 		A9E1D7E8209B5A3C0010B5C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1D7E7209B5A3C0010B5C4 /* AppDelegate.swift */; };
 		A9E1D7EA209B5A3C0010B5C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1D7E9209B5A3C0010B5C4 /* ViewController.swift */; };
 		A9E1D7EF209B5A3D0010B5C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9E1D7EE209B5A3D0010B5C4 /* Assets.xcassets */; };
@@ -55,6 +57,8 @@
 		A962099A20A0BFEC00CB8E49 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = Networking/NetworkService.swift; sourceTree = "<group>"; };
 		A9B792AD20A0C14300F1814E /* Codable+Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Codable+Tools.swift"; path = "Networking/Models/Codable+Tools.swift"; sourceTree = "<group>"; };
 		A9B792AF20A0D91B00F1814E /* Array+Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Objects.swift"; sourceTree = "<group>"; };
+		A9B792B220A0F02200F1814E /* NetworkService+Countries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NetworkService+Countries.swift"; path = "Networking/NetworkService+Countries.swift"; sourceTree = "<group>"; };
+		A9B792B420A0F05500F1814E /* NetworkService+REST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NetworkService+REST.swift"; path = "Networking/NetworkService+REST.swift"; sourceTree = "<group>"; };
 		A9E1D7E4209B5A3C0010B5C4 /* VaporCountriesIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaporCountriesIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E1D7E7209B5A3C0010B5C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9E1D7E9209B5A3C0010B5C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +127,8 @@
 				A962097A20A0BF2600CB8E49 /* HTTPStatus */,
 				A962099920A0BFEC00CB8E49 /* SessionRequest.swift */,
 				A962099A20A0BFEC00CB8E49 /* NetworkService.swift */,
+				A9B792B420A0F05500F1814E /* NetworkService+REST.swift */,
+				A9B792B220A0F02200F1814E /* NetworkService+Countries.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -324,7 +330,9 @@
 				A9E1D7EA209B5A3C0010B5C4 /* ViewController.swift in Sources */,
 				A962098F20A0BFB900CB8E49 /* Promise.swift in Sources */,
 				A962099B20A0BFED00CB8E49 /* SessionRequest.swift in Sources */,
+				A9B792B320A0F02200F1814E /* NetworkService+Countries.swift in Sources */,
 				A962099320A0BFB900CB8E49 /* Debug.swift in Sources */,
+				A9B792B520A0F05500F1814E /* NetworkService+REST.swift in Sources */,
 				A962099220A0BFB900CB8E49 /* Query.swift in Sources */,
 				A962099120A0BFB900CB8E49 /* Result.swift in Sources */,
 				A962097D20A0BF6100CB8E49 /* HTTPStatusCodes.swift in Sources */,

@@ -31,7 +31,7 @@ protocol SessionRequestProtocol : class {
 
 public class SessionRequest {
   let request : URLRequest
-  let expectedStatus : HTTPStatusCode
+  let expectedStatuses : [HTTPStatusCode]
   let session : URLSession
   let taskKind : TaskKind = .data
   let requestIdentifier : String
@@ -46,8 +46,8 @@ public class SessionRequest {
   
 // MARK: - Init
   
-  init(request: URLRequest, expectedStatus : HTTPStatusCode, session : URLSession, resultBlock : @escaping DataTaskResultBlock, delegate: SessionRequestProtocol? = nil) {
-    self.expectedStatus = expectedStatus
+  init(request: URLRequest, expectedStatuses : [HTTPStatusCode], session : URLSession, resultBlock : @escaping DataTaskResultBlock, delegate: SessionRequestProtocol? = nil) {
+    self.expectedStatuses = expectedStatuses
     self.session = session
     self.request = request
     self.delegate = delegate
@@ -57,7 +57,13 @@ public class SessionRequest {
     self.task.resume()
   }
   
-// MARK: - Base 
+// MARK: - Base
+  
+  func checkResponseStatus(status : NSInteger, expectedStatuses : [HTTPStatusCode]) -> Bool {
+    return expectedStatuses.filter({
+      $0.rawValue == status
+    }).count > 0
+  }
   
   private func makeDataTask() -> URLSessionDataTask {
     
@@ -67,8 +73,8 @@ public class SessionRequest {
         
         let request = self.request
         
-        if (response.statusCode == self.expectedStatus.rawValue) {
-          debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
+        if (self.checkResponseStatus(status: response.statusCode, expectedStatuses: self.expectedStatuses)) {
+          debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
           DispatchQueue.main.async {
             
             //call result block as success
@@ -82,7 +88,7 @@ public class SessionRequest {
           }
           
         } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
-          debugPrint("Authentication required for: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
+          debugPrint("Authentication required for: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
           DispatchQueue.main.async {
             //call delegate
             if let delegate = self.delegate {
@@ -91,7 +97,7 @@ public class SessionRequest {
           }
           
         } else {
-          debugPrint("Invalid status code \(response.statusCode) for: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
+          debugPrint("Invalid status code \(response.statusCode) for: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
           DispatchQueue.main.async {
             
             //call result block as error
