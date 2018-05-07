@@ -20,7 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     self.window?.rootViewController = ViewController()
     self.window?.makeKeyAndVisible()
     
+    testNet()
+    
     return true
+  }
+  
+  func testNet() {
+    let apiMan = ApiDataManager()
+    apiMan.loadContinents()
+    apiMan.loadCountries()
   }
 
   func applicationWillResignActive(_ application: UIApplication) {

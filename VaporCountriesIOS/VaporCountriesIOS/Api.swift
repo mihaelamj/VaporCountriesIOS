@@ -13,19 +13,26 @@ public class Api {
   let netService: NetworkService
   
   public init () {
-    netService = NetworkService(baseUrl: URL(string: "http://localhost:8080")!, configuration: URLSessionConfiguration.default)
+    let url = "http://localhost:8080/api/"
+    //http://localhost:8080/api/continents/
+   // http://localhost:8080/api/continets/
+    netService = NetworkService(baseUrl: URL(string: url)!, configuration: URLSessionConfiguration.default)
   }
 }
 
 public extension Api {
   
   public func continents() throws -> Promise<[Continent]> {
-    return try netService.get(path: "continents")
+    return try netService.get(path: "continets")
   }
 
   /// Get a single continent
   public func continent(_ id: Int) throws -> Promise<Continent> {
-    return try netService.get(path: "continents/\(id)")
+    return try netService.get(path: "continets/\(id)")
+  }
+  
+  public func countries() throws -> Promise<[Country]> {
+    return try netService.get(path: "countries")
   }
   
   
