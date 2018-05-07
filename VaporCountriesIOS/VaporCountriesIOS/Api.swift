@@ -22,6 +22,7 @@ public class Api {
 
 public extension Api {
   
+  /// Get all continents
   public func continents() throws -> Promise<[Continent]> {
     return try netService.get(path: "continets")
   }
@@ -31,9 +32,25 @@ public extension Api {
     return try netService.get(path: "continets/\(id)")
   }
   
+  /// get all countries
   public func countries() throws -> Promise<[Country]> {
     return try netService.get(path: "countries")
   }
   
+  /// Get a single country
+  public func country(_ id: Int) throws -> Promise<Country> {
+    return try netService.get(path: "countries/\(id)")
+  }
   
+  /// Get continent for a country
+  //http://localhost:8080/api/countries/33/continent
+  public func countryContinent(_ id: Int) throws -> Promise<Country> {
+    return try netService.get(path: "countries/\(id)/continent")
+  }
+  
+  //Get countries for a continent
+  //http://localhost:8080/api/continets/1/countries
+  public func continentCountries(_ id: Int) throws -> Promise<Country> {
+    return try netService.get(path: "continets/\(id)/countries")
+  }
 }

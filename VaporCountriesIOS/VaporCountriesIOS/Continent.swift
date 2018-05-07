@@ -23,3 +23,9 @@ public final class Continent : Codable {
   }
 }
 
+extension Continent: CustomStringConvertible {
+  public var description: String {
+    return "\(name), \(alpha2)"
+  }
+}
+

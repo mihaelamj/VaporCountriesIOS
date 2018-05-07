@@ -33,3 +33,9 @@ public final class Country : Codable {
   }
 }
 
+extension Country: CustomStringConvertible {
+  public var description: String {
+    return "\(name), \(alpha2), \(numeric), \(alpha3), \(calling), \(currency)"
+  }
+}
+

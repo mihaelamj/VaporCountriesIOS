@@ -14,6 +14,20 @@ public enum TaskKind : String {
   case download = "download"
 }
 
+func checkResponseStatus(status : NSInteger, expectedStatuses : [HTTPStatusCode]) -> Bool {
+  return expectedStatuses.filter({
+    $0.rawValue == status
+  }).count > 0
+}
+
+func statusesString(_ statuses : [HTTPStatusCode]) -> String {
+  var all : String = ""
+  statuses.map {
+    all = all + "\($0.description)"
+  }
+  return all
+}
+
 // MARK: - Protocol
 protocol SessionRequestProtocol : class {
   // 'class' means only class types can implement it
@@ -53,19 +67,13 @@ public class SessionRequest {
     self.delegate = delegate
     self.resultBlock = resultBlock
     self.requestIdentifier = UUID().uuidString
-    self._task = self.makeDataTask()
+    self._task = self.makeDataTaskWeak()
     self.task.resume()
   }
   
 // MARK: - Base
   
-  func checkResponseStatus(status : NSInteger, expectedStatuses : [HTTPStatusCode]) -> Bool {
-    return expectedStatuses.filter({
-      $0.rawValue == status
-    }).count > 0
-  }
-  
-  private func makeDataTask() -> URLSessionDataTask {
+  private func makeDataTaskUnowned() -> URLSessionDataTask {
     
     let _atask = session.dataTask(with: request) { [unowned self] (data, response, error) in
       
@@ -73,7 +81,7 @@ public class SessionRequest {
         
         let request = self.request
         
-        if (self.checkResponseStatus(status: response.statusCode, expectedStatuses: self.expectedStatuses)) {
+        if (checkResponseStatus(status: response.statusCode, expectedStatuses: self.expectedStatuses)) {
           debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
           DispatchQueue.main.async {
             
@@ -116,6 +124,64 @@ public class SessionRequest {
     return _atask
   }
   
+  private func makeDataTaskWeak() -> URLSessionDataTask {
+    
+    let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
+      
+      if let response = response as? HTTPURLResponse {
+        
+        guard let strongSelf = self else {
+          debugPrint("Error: self is deallocated!!")
+          return
+        }
+        
+        let request = strongSelf.request
+        
+        if (checkResponseStatus(status: response.statusCode, expectedStatuses: (self?.expectedStatuses)!)) {
+          debugPrint("Success: \(request.httpMethod ?? "no method"), \(String(describing: request.url!) ), \(statusesString((self?.expectedStatuses)!))")
+          DispatchQueue.main.async {
+            
+            //call result block as success
+            strongSelf.resultBlock(Result.success((data: data, response: response)))
+            
+            //call delegate
+            if let delegate = strongSelf.delegate {
+              delegate.sessionRequestDidComplete(sessionRequest: self!)
+            }
+            
+          }
+          
+        } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
+          debugPrint("Authentication required for: \(request.httpMethod!), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
+          DispatchQueue.main.async {
+            //call delegate
+            if let delegate = strongSelf.delegate {
+              delegate.sessionRequestRequiresAuthentication(sessionRequest: self!)
+            }
+          }
+          
+        } else {
+          debugPrint("Invalid status code \(response.statusCode) for: \(String(describing: request.httpMethod!) ), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
+          DispatchQueue.main.async {
+            
+            //call result block as error
+            self?.resultBlock(Result.error(Problem.invalidStatusCode))
+            
+            //call delegate
+            if let delegate = strongSelf.delegate {
+              delegate.sessionRequestFailed(sessionRequest: self!, error: error)
+            }
+          }
+          
+        }
+        
+      }
+    }
+    return _atask
+  }
+
+  
+  
 // MARK: - Public
   
   public func cancel() {
@@ -123,7 +189,7 @@ public class SessionRequest {
   }
   
   public func restart() {
-    self._task = makeDataTask()
+    self._task = makeDataTaskWeak()
     self.task.resume()
   }
   

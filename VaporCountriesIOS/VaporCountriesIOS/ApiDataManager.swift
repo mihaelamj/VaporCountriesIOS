@@ -32,13 +32,68 @@ public final class ApiDataManager {
       // TODO: Handle! How? :/
       print(error)
     }
-    
+  }
+  
+  func loadContinent(id: Int) {
+    do {
+      try api?.continent(id).then( { continent in
+        debugPrint("Continent: \(continent)")
+      }).error({ error in
+        debugPrint("Error: \(error)")
+      })
+      
+    } catch {
+      // TODO: Handle! How? :/
+      print(error)
+    }
+  }
+  
+  func loadCountry(id: Int) {
+    do {
+      try api?.country(id).then( { country in
+        debugPrint("Country: \(country)")
+      }).error({ error in
+        debugPrint("Error: \(error)")
+      })
+      
+    } catch {
+      // TODO: Handle! How? :/
+      print(error)
+    }
   }
   
   func loadCountries() {
     do {
       try api?.countries().then( { countries in
         self.countries = countries
+//        debugPrint("Countries: \(countries)")
+      }).error({ error in
+        debugPrint("Error: \(error)")
+      })
+      
+    } catch {
+      // TODO: Handle! How? :/
+      print(error)
+    }
+  }
+  
+  func loadCountryContinent(id: Int) {
+    do {
+      try api?.countryContinent(id).then( { continent in
+        debugPrint("Continent: \(continent)")
+      }).error({ error in
+        debugPrint("Error: \(error)")
+      })
+      
+    } catch {
+      // TODO: Handle! How? :/
+      print(error)
+    }
+  }
+  
+  func loadContinentCountries(id: Int) {
+    do {
+      try api?.continentCountries(id).then( { countries in
         debugPrint("Countries: \(countries)")
       }).error({ error in
         debugPrint("Error: \(error)")
@@ -48,7 +103,7 @@ public final class ApiDataManager {
       // TODO: Handle! How? :/
       print(error)
     }
-    
   }
+  
   
 }
