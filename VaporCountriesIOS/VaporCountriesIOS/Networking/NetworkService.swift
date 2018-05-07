@@ -123,7 +123,7 @@ open class NetworkService {
 // MARK: - Base Actions
   
 //  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {
-  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping DataTaskResultBlock ) {
+  public func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping DataTaskResultBlock ) {
 
     //build path
     var request = makeRequest(with: path)
@@ -142,12 +142,12 @@ open class NetworkService {
     
     //save networkRequest in dictionary
     self.requests[sessionRequest.requestIdentifier] = sessionRequest
-    
-    //make session task
 
   }
 
 }
+
+// MARK: - Request Delegate
 
 extension NetworkService : SessionRequestProtocol {
   
@@ -174,7 +174,8 @@ extension NetworkService : SessionRequestProtocol {
   }
   
   func sessionRequestRequiresAuthentication(sessionRequest: SessionRequest) {
-//    [self.requestsPendingAuthentication addObject:request];
+    self.requestsPendingAuthentication.append(sessionRequest)
+    //TODO: Send Notification
 //    [[NSNotificationCenter defaultCenter] postNotificationName:CCVChatcaveServiceAuthRequiredNotification object:nil];
   }
   

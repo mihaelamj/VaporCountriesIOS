@@ -38,12 +38,13 @@ public class SessionRequest {
   let resultBlock : DataTaskResultBlock
   weak var delegate : SessionRequestProtocol?
   
-  //A trick to use methods in initializer and avoid the error:
-  //'self' used before all stored properties are initialized
+  //A trick to use methods in initializer and avoid the error: 'self' used before all stored properties are initialized
   private var _task: URLSessionDataTask!
   var task: URLSessionDataTask {
     return _task
   }
+  
+// MARK: - Init
   
   init(request: URLRequest, expectedStatus : HTTPStatusCode, session : URLSession, resultBlock : @escaping DataTaskResultBlock, delegate: SessionRequestProtocol? = nil) {
     self.expectedStatus = expectedStatus
@@ -55,6 +56,8 @@ public class SessionRequest {
     self._task = self.makeDataTask()
     self.task.resume()
   }
+  
+// MARK: - Base Actions
   
   private func makeDataTask() -> URLSessionDataTask {
     
@@ -107,6 +110,16 @@ public class SessionRequest {
     return _atask
   }
   
+// MARK: - Public
+  
+  public func cancel() {
+    self.task.cancel()
+  }
+  
+  public func restart() {
+    self._task = makeDataTask()
+    self.task.resume()
+  }
   
 }
 
