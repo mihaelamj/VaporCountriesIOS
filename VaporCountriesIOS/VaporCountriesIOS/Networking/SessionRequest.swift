@@ -22,7 +22,7 @@ protocol SessionRequestProtocol : class {
   func sessionRequestFailed(sessionRequest: SessionRequest, error: Error?)
 }
 
-public typealias DataTaskResultBlock = ((_ result: Result<DataResponse>) -> ())
+
 
 // MARK: - Class
 
@@ -35,7 +35,7 @@ public class SessionRequest {
   let session : URLSession
   let taskKind : TaskKind = .data
   let requestIdentifier : String
-  //  let resultBlock : DataTaskResultBlock
+  let resultBlock : DataTaskResultBlock
   weak var delegate : SessionRequestProtocol?
   
   //A trick to use methods in initializer and avoid the error:
@@ -45,11 +45,12 @@ public class SessionRequest {
     return _task
   }
   
-  init(request: URLRequest, expectedStatus : HTTPStatusCode, session : URLSession, delegate: SessionRequestProtocol? = nil) {
+  init(request: URLRequest, expectedStatus : HTTPStatusCode, session : URLSession, resultBlock : @escaping DataTaskResultBlock, delegate: SessionRequestProtocol? = nil) {
     self.expectedStatus = expectedStatus
     self.session = session
     self.request = request
     self.delegate = delegate
+    self.resultBlock = resultBlock
     self.requestIdentifier = UUID().uuidString
     self._task = self.makeDataTask()
     self.task.resume()
@@ -96,8 +97,9 @@ public class SessionRequest {
       }
     }
     return _atask
-    
   }
+  
+  
 }
 
 extension SessionRequest: Equatable {

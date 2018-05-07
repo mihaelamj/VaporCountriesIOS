@@ -38,9 +38,12 @@ public typealias Parameters = [String: Any]
 /// A dictionary of headers to apply to a `URLRequest`.
 public typealias HTTPHeaders = [String: String]
 
+//_ result: @escaping ((_ result: Result<DataResponse>) -> ())
+
 /// A network operation response `URLResponse`.
 public typealias DataResponse = (data: Data, response: URLResponse)
 
+public typealias DataTaskResultBlock = ((_ result: Result<DataResponse>) -> ())
 
 //public typealias DataTaskResultBlock = (_ result: Result<DataResponse>) -> ()
 
@@ -119,7 +122,8 @@ open class NetworkService {
   
 // MARK: - Base Actions
   
-  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {
+//  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {
+  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping DataTaskResultBlock ) {
 
     //build path
     var request = makeRequest(with: path)
@@ -134,7 +138,7 @@ open class NetworkService {
     buildHTTPHeaders(for: &request)
     
     //make SessionRequest
-    let sessionRequest = SessionRequest(request: request, expectedStatus: expectedStatus, session: self.session, delegate: self)
+    let sessionRequest = SessionRequest(request: request, expectedStatus: expectedStatus, session: self.session, resultBlock: result, delegate: self)
     
     //save networkRequest in dictionary
     self.requests[sessionRequest.requestIdentifier] = sessionRequest
