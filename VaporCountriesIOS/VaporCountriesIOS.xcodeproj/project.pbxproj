@@ -20,6 +20,11 @@
 		A9B792B020A0D91B00F1814E /* Array+Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792AF20A0D91B00F1814E /* Array+Objects.swift */; };
 		A9B792B320A0F02200F1814E /* NetworkService+Countries.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792B220A0F02200F1814E /* NetworkService+Countries.swift */; };
 		A9B792B520A0F05500F1814E /* NetworkService+REST.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792B420A0F05500F1814E /* NetworkService+REST.swift */; };
+		A9B792B720A0FA4A00F1814E /* Continent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B792B620A0FA4A00F1814E /* Continent.swift */; };
+		A9BE7ABB20A0FC0400F8D728 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE7ABA20A0FC0400F8D728 /* Country.swift */; };
+		A9BE7ABD20A0FD8000F8D728 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE7ABC20A0FD8000F8D728 /* Api.swift */; };
+		A9BE7AC020A0FFB700F8D728 /* NetworkService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE7ABF20A0FFB700F8D728 /* NetworkService+Promise.swift */; };
+		A9BE7AC220A101C200F8D728 /* ApiDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE7AC120A101C200F8D728 /* ApiDataManager.swift */; };
 		A9E1D7E8209B5A3C0010B5C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1D7E7209B5A3C0010B5C4 /* AppDelegate.swift */; };
 		A9E1D7EA209B5A3C0010B5C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1D7E9209B5A3C0010B5C4 /* ViewController.swift */; };
 		A9E1D7EF209B5A3D0010B5C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9E1D7EE209B5A3D0010B5C4 /* Assets.xcassets */; };
@@ -59,6 +64,11 @@
 		A9B792AF20A0D91B00F1814E /* Array+Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Objects.swift"; sourceTree = "<group>"; };
 		A9B792B220A0F02200F1814E /* NetworkService+Countries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NetworkService+Countries.swift"; path = "Networking/NetworkService+Countries.swift"; sourceTree = "<group>"; };
 		A9B792B420A0F05500F1814E /* NetworkService+REST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NetworkService+REST.swift"; path = "Networking/NetworkService+REST.swift"; sourceTree = "<group>"; };
+		A9B792B620A0FA4A00F1814E /* Continent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Continent.swift; sourceTree = "<group>"; };
+		A9BE7ABA20A0FC0400F8D728 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		A9BE7ABC20A0FD8000F8D728 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		A9BE7ABF20A0FFB700F8D728 /* NetworkService+Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NetworkService+Promise.swift"; path = "Networking/NetworkService+Promise.swift"; sourceTree = "<group>"; };
+		A9BE7AC120A101C200F8D728 /* ApiDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiDataManager.swift; sourceTree = "<group>"; };
 		A9E1D7E4209B5A3C0010B5C4 /* VaporCountriesIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaporCountriesIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E1D7E7209B5A3C0010B5C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9E1D7E9209B5A3C0010B5C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +138,7 @@
 				A962099920A0BFEC00CB8E49 /* SessionRequest.swift */,
 				A962099A20A0BFEC00CB8E49 /* NetworkService.swift */,
 				A9B792B420A0F05500F1814E /* NetworkService+REST.swift */,
+				A9BE7ABF20A0FFB700F8D728 /* NetworkService+Promise.swift */,
 				A9B792B220A0F02200F1814E /* NetworkService+Countries.swift */,
 			);
 			name = Networking;
@@ -139,6 +150,24 @@
 				A9B792AF20A0D91B00F1814E /* Array+Objects.swift */,
 			);
 			name = Util;
+			sourceTree = "<group>";
+		};
+		A9B792B820A0FA5C00F1814E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A9B792B620A0FA4A00F1814E /* Continent.swift */,
+				A9BE7ABA20A0FC0400F8D728 /* Country.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		A9BE7ABE20A0FD8800F8D728 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A9BE7ABC20A0FD8000F8D728 /* Api.swift */,
+				A9BE7AC120A101C200F8D728 /* ApiDataManager.swift */,
+			);
+			name = API;
 			sourceTree = "<group>";
 		};
 		A9E1D7DB209B5A3C0010B5C4 = {
@@ -164,8 +193,10 @@
 		A9E1D7E6209B5A3C0010B5C4 /* VaporCountriesIOS */ = {
 			isa = PBXGroup;
 			children = (
+				A9B792B820A0FA5C00F1814E /* Model */,
 				A9E1D7E7209B5A3C0010B5C4 /* AppDelegate.swift */,
 				A9E1D7E9209B5A3C0010B5C4 /* ViewController.swift */,
+				A9BE7ABE20A0FD8800F8D728 /* API */,
 				A9E1D7EE209B5A3D0010B5C4 /* Assets.xcassets */,
 				A9E1D7F0209B5A3D0010B5C4 /* LaunchScreen.storyboard */,
 				A9E1D7F3209B5A3D0010B5C4 /* Info.plist */,
@@ -325,18 +356,23 @@
 			files = (
 				A9B792AE20A0C14400F1814E /* Codable+Tools.swift in Sources */,
 				A962099C20A0BFED00CB8E49 /* NetworkService.swift in Sources */,
+				A9BE7AC020A0FFB700F8D728 /* NetworkService+Promise.swift in Sources */,
 				A962097E20A0BF6100CB8E49 /* HTTPStatusCodes+Extensions.swift in Sources */,
 				A962099020A0BFB900CB8E49 /* Problem.swift in Sources */,
 				A9E1D7EA209B5A3C0010B5C4 /* ViewController.swift in Sources */,
+				A9BE7AC220A101C200F8D728 /* ApiDataManager.swift in Sources */,
+				A9B792B720A0FA4A00F1814E /* Continent.swift in Sources */,
 				A962098F20A0BFB900CB8E49 /* Promise.swift in Sources */,
 				A962099B20A0BFED00CB8E49 /* SessionRequest.swift in Sources */,
 				A9B792B320A0F02200F1814E /* NetworkService+Countries.swift in Sources */,
 				A962099320A0BFB900CB8E49 /* Debug.swift in Sources */,
 				A9B792B520A0F05500F1814E /* NetworkService+REST.swift in Sources */,
+				A9BE7ABB20A0FC0400F8D728 /* Country.swift in Sources */,
 				A962099220A0BFB900CB8E49 /* Query.swift in Sources */,
 				A962099120A0BFB900CB8E49 /* Result.swift in Sources */,
 				A962097D20A0BF6100CB8E49 /* HTTPStatusCodes.swift in Sources */,
 				A9B792B020A0D91B00F1814E /* Array+Objects.swift in Sources */,
+				A9BE7ABD20A0FD8000F8D728 /* Api.swift in Sources */,
 				A9E1D7E8209B5A3C0010B5C4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

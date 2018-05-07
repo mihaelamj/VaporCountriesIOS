@@ -10,14 +10,34 @@ import Foundation
 
 extension NetworkService {
   
-  //public func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping DataTaskResultBlock ) {
-  
-  func get(path: String, _ result: @escaping DataTaskResultBlock) {
-    return submitRequest(path: path, data: nil, method: .get, headers: [:], expectedStatuses: [.ok], result)
+  func jsonJeaders() -> HTTPHeaders {
+    return ["Content-Type": "application/json; charset=utf8"]
   }
   
-  func post(path: String, object: Encodable, _ result: @escaping DataTaskResultBlock) {
-    
+  func get(path: String, _ result: @escaping DataTaskResultBlock) throws {
+    return submitRequest(path: path, data: nil, method: .get, headers: [:], expectedStatuses: [.ok, .found, .notModified], result)
+  }
+  
+  func post(path: String, data: Data, _ result: @escaping DataTaskResultBlock) throws {
+    return submitRequest(path: path, data: data, method: .post, headers: jsonJeaders(), expectedStatuses: [.ok, .created], result)
+  }
+  
+  func post(path: String, object: Encodable, _ result: @escaping DataTaskResultBlock) throws {
+    let data = try object.asData()
+    return submitRequest(path: path, data: data, method: .post, headers: jsonJeaders(), expectedStatuses: [.ok, .created], result)
+  }
+  
+  func put(path: String, object: Encodable, _ result: @escaping DataTaskResultBlock) throws {
+    let data = try object.asData()
+    return submitRequest(path: path, data: data, method: .put, headers: jsonJeaders(), expectedStatuses: [.ok, .created], result)
+  }
+  
+  func put(path: String, data: Data, _ result: @escaping DataTaskResultBlock) throws {
+    return submitRequest(path: path, data: data, method: .put, headers: [:], expectedStatuses: [.ok, .created], result)
+  }
+  
+  func delete(path: String, _ result: @escaping DataTaskResultBlock) throws {
+    return submitRequest(path: path, data: nil, method: .delete, headers: [:], expectedStatuses: [.accepted, .noContent], result)
   }
   
 }
