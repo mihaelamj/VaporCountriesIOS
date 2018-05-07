@@ -67,7 +67,11 @@ public class SessionRequest {
         if (response.statusCode == self.expectedStatus.rawValue) {
           debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
           DispatchQueue.main.async {
-            // TODO: call success block
+            
+            //call result block as success
+            self.resultBlock(Result.success((data: data, response: response)))
+            
+            //call delegate
             if let delegate = self.delegate {
               delegate.sessionRequestDidComplete(sessionRequest: self)
             }
@@ -77,6 +81,7 @@ public class SessionRequest {
         } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
           debugPrint("Authentication required for: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
           DispatchQueue.main.async {
+            //call delegate
             if let delegate = self.delegate {
               delegate.sessionRequestRequiresAuthentication(sessionRequest: self)
             }
@@ -85,8 +90,11 @@ public class SessionRequest {
         } else {
           debugPrint("Invalid status code \(response.statusCode) for: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
           DispatchQueue.main.async {
-            //            var error = Error(
-            // TODO: call failure block
+            
+            //call result block as error
+            self.resultBlock(Result.error(Problem.invalidStatusCode))
+            
+            //call delegate
             if let delegate = self.delegate {
               delegate.sessionRequestFailed(sessionRequest: self, error: error)
             }

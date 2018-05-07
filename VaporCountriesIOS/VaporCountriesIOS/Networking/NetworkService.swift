@@ -41,7 +41,7 @@ public typealias HTTPHeaders = [String: String]
 //_ result: @escaping ((_ result: Result<DataResponse>) -> ())
 
 /// A network operation response `URLResponse`.
-public typealias DataResponse = (data: Data, response: URLResponse)
+public typealias DataResponse = (data: Data?, response: URLResponse)
 
 public typealias DataTaskResultBlock = ((_ result: Result<DataResponse>) -> ())
 

@@ -10,5 +10,6 @@ import Foundation
 
 
 public enum Problem: Error {
-    case unknownProblem
+  case unknownProblem
+  case invalidStatusCode
 }

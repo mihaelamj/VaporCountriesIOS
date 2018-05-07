@@ -30,7 +30,7 @@ extension Result where Expectation == DataResponse {
     }
     
     public func unwrap<T>(to: T.Type) throws -> T where T: Decodable {
-        let object = try unwrap().data.asObject(to: to)
+        let object = try unwrap().data!.asObject(to: to)
         return object
     }
     
