@@ -134,9 +134,13 @@ open class NetworkService {
   
 //  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {
   public func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatuses : [HTTPStatusCode], _ result: @escaping DataTaskResultBlock ) {
-
+    
     //build path
     var request = makeRequest(with: path)
+    
+    debugPrint("Path : \(path)")
+    debugPrint("method : \(method.rawValue)")
+    debugPrint("Full Path: \(request.url!)")
     
     //set body
     if let data = data { request.httpBody = data }

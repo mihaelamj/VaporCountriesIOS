@@ -22,7 +22,7 @@ func checkResponseStatus(status : NSInteger, expectedStatuses : [HTTPStatusCode]
 
 func statusesString(_ statuses : [HTTPStatusCode]) -> String {
   var all : String = ""
-  statuses.map {
+  _ = statuses.map {
     all = all + "\($0.description)"
   }
   return all
@@ -41,7 +41,6 @@ protocol SessionRequestProtocol : class {
 // MARK: - Class
 
 //let result: ((_ result: Result<DataResponseTuple>) -> ())
-
 
 public class SessionRequest {
   let request : URLRequest
@@ -146,7 +145,7 @@ public class SessionRequest {
             
             //call delegate
             if let delegate = strongSelf.delegate {
-              delegate.sessionRequestDidComplete(sessionRequest: self!)
+              delegate.sessionRequestDidComplete(sessionRequest: strongSelf)
             }
             
           }
@@ -156,7 +155,7 @@ public class SessionRequest {
           DispatchQueue.main.async {
             //call delegate
             if let delegate = strongSelf.delegate {
-              delegate.sessionRequestRequiresAuthentication(sessionRequest: self!)
+              delegate.sessionRequestRequiresAuthentication(sessionRequest: strongSelf)
             }
           }
           
@@ -165,11 +164,11 @@ public class SessionRequest {
           DispatchQueue.main.async {
             
             //call result block as error
-            self?.resultBlock(Result.error(Problem.invalidStatusCode))
+            strongSelf.resultBlock(Result.error(Problem.invalidStatusCode))
             
             //call delegate
             if let delegate = strongSelf.delegate {
-              delegate.sessionRequestFailed(sessionRequest: self!, error: error)
+              delegate.sessionRequestFailed(sessionRequest: strongSelf, error: error)
             }
           }
           

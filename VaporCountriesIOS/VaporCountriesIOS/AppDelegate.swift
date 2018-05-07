@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    apiMan.loadCountries()
 //    apiMan.loadContinent(id: 3)
 //    apiMan.loadCountry(id: 3)
-    apiMan.loadCountryContinent(id: 3)
+    apiMan.loadCountryContinent(id: 34)
 //    apiMan.loadContinentCountries(id: 3)
   }
 
