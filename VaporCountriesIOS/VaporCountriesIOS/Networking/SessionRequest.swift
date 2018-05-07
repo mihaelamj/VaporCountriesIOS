@@ -19,10 +19,14 @@ protocol SessionRequestProtocol : class {
   // 'class' means only class types can implement it
   func sessionRequestDidComplete(sessionRequest: SessionRequest)
   func sessionRequestRequiresAuthentication(sessionRequest: SessionRequest)
-  func sessionRequestFailed(sessionRequest: SessionRequest, error: inout Error)
+  func sessionRequestFailed(sessionRequest: SessionRequest, error: Error?)
 }
 
+public typealias DataTaskResultBlock = ((_ result: Result<DataResponse>) -> ())
+
 // MARK: - Class
+
+//let result: ((_ result: Result<DataResponseTuple>) -> ())
 
 
 public class SessionRequest {
@@ -31,6 +35,7 @@ public class SessionRequest {
   let session : URLSession
   let taskKind : TaskKind = .data
   let requestIdentifier : String
+  //  let resultBlock : DataTaskResultBlock
   weak var delegate : SessionRequestProtocol?
   
   //A trick to use methods in initializer and avoid the error:
@@ -52,16 +57,16 @@ public class SessionRequest {
   
   private func makeDataTask() -> URLSessionDataTask {
     
-    let _task = session.dataTask(with: request) { [unowned self] (data, response, error) in
+    let _atask = session.dataTask(with: request) { [unowned self] (data, response, error) in
       
       if let response = response as? HTTPURLResponse {
-
+        
         let request = self.request
         
         if (response.statusCode == self.expectedStatus.rawValue) {
           debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
-          
           DispatchQueue.main.async {
+            // TODO: call success block
             if let delegate = self.delegate {
               delegate.sessionRequestDidComplete(sessionRequest: self)
             }
@@ -69,18 +74,30 @@ public class SessionRequest {
           }
           
         } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
+          debugPrint("Authentication required for: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
+          DispatchQueue.main.async {
+            if let delegate = self.delegate {
+              delegate.sessionRequestRequiresAuthentication(sessionRequest: self)
+            }
+          }
           
         } else {
+          debugPrint("Invalid status code \(response.statusCode) for: \(request.httpMethod!), \(request.url!), \(self.expectedStatus) ")
+          DispatchQueue.main.async {
+            //            var error = Error(
+            // TODO: call failure block
+            if let delegate = self.delegate {
+              delegate.sessionRequestFailed(sessionRequest: self, error: error)
+            }
+          }
           
         }
         
       }
-      
     }
-    return _task
+    return _atask
     
   }
-  
 }
 
 extension SessionRequest: Equatable {

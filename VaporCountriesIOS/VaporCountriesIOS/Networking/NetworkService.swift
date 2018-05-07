@@ -42,7 +42,8 @@ public typealias HTTPHeaders = [String: String]
 public typealias DataResponse = (data: Data, response: URLResponse)
 
 
-public typealias DataTaskResultBlock = (_ result: Result<DataResponse>) -> ()
+//public typealias DataTaskResultBlock = (_ result: Result<DataResponse>) -> ()
+
 
 open class NetworkService {
   
@@ -145,8 +146,8 @@ open class NetworkService {
 }
 
 extension NetworkService : SessionRequestProtocol {
-  func sessionRequestDidComplete(sessionRequest: SessionRequest) {
-    
+  
+  private func removeRequestFromCollections(sessionRequest: SessionRequest) {
     if let value = self.requests.removeValue(forKey: sessionRequest.requestIdentifier) {
       print("The value \(value) was removed.")
     }
@@ -155,15 +156,22 @@ extension NetworkService : SessionRequestProtocol {
       self.requestsPendingAuthentication.remove(at: index)
       print("The request at index \(index) was removed.")
     }
-
+  }
+  
+  func sessionRequestDidComplete(sessionRequest: SessionRequest) {
+    removeRequestFromCollections(sessionRequest: sessionRequest)
+  }
+  
+  func sessionRequestFailed(sessionRequest: SessionRequest, error: Error?) {
+    if let err = error {
+      print("Error \(err)")
+    }
+    removeRequestFromCollections(sessionRequest: sessionRequest)
   }
   
   func sessionRequestRequiresAuthentication(sessionRequest: SessionRequest) {
-    //
-  }
-  
-  func sessionRequestFailed(sessionRequest: SessionRequest, error: inout Error) {
-    //
+//    [self.requestsPendingAuthentication addObject:request];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:CCVChatcaveServiceAuthRequiredNotification object:nil];
   }
   
   
