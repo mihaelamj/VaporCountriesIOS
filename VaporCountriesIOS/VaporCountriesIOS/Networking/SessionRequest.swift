@@ -72,123 +72,13 @@ public class SessionRequest {
   
 // MARK: - Base
   
-  private func makeDataTaskUnowned() -> URLSessionDataTask {
-    
-    let _atask = session.dataTask(with: request) { [unowned self] (data, response, error) in
-      
-      if let response = response as? HTTPURLResponse {
-        
-        let request = self.request
-        
-        if (checkResponseStatus(status: response.statusCode, expectedStatuses: self.expectedStatuses)) {
-          debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
-          DispatchQueue.main.async {
-            
-            //call result block as success
-            self.resultBlock(Result.success((data: data, response: response)))
-            
-            //call delegate
-            if let delegate = self.delegate {
-              delegate.sessionRequestDidComplete(sessionRequest: self)
-            }
-            
-          }
-          
-        } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
-          debugPrint("Authentication required for: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
-          DispatchQueue.main.async {
-            //call delegate
-            if let delegate = self.delegate {
-              delegate.sessionRequestRequiresAuthentication(sessionRequest: self)
-            }
-          }
-          
-        } else {
-          debugPrint("Invalid status code \(response.statusCode) for: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
-          DispatchQueue.main.async {
-            
-            //call result block as error
-            self.resultBlock(Result.error(Problem.invalidStatusCode))
-            
-            //call delegate
-            if let delegate = self.delegate {
-              delegate.sessionRequestFailed(sessionRequest: self, error: error)
-            }
-          }
-          
-        }
-        
-      }
-    }
-    return _atask
-  }
-  
-  private func makeDataTaskWeakOld() -> URLSessionDataTask {
-    
-    
-    let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
-      
-      Debug.request(self?.request, response: response, data: data)
-      
-      if let response = response as? HTTPURLResponse {
-        
-        guard let strongSelf = self else {
-          debugPrint("Error: self is deallocated!!")
-          return
-        }
-        
-        let request = strongSelf.request
-        
-        if (checkResponseStatus(status: response.statusCode, expectedStatuses: (self?.expectedStatuses)!)) {
-          debugPrint("Success: \(request.httpMethod ?? "no method"), \(String(describing: request.url!) ), \(statusesString((self?.expectedStatuses)!))")
-          DispatchQueue.main.async {
-            
-            //call result block as success
-            strongSelf.resultBlock(Result.success((data: data, response: response)))
-            
-            //call delegate
-            if let delegate = strongSelf.delegate {
-              delegate.sessionRequestDidComplete(sessionRequest: strongSelf)
-            }
-            
-          }
-          
-        } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
-          debugPrint("Authentication required for: \(request.httpMethod!), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
-          DispatchQueue.main.async {
-            //call delegate
-            if let delegate = strongSelf.delegate {
-              delegate.sessionRequestRequiresAuthentication(sessionRequest: strongSelf)
-            }
-          }
-          
-        } else {
-          debugPrint("Invalid status code \(response.statusCode) for: \(String(describing: request.httpMethod!) ), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
-          DispatchQueue.main.async {
-            
-            //call result block as error
-            strongSelf.resultBlock(Result.error(Problem.invalidStatusCode))
-            
-            //call delegate
-            if let delegate = strongSelf.delegate {
-              delegate.sessionRequestFailed(sessionRequest: strongSelf, error: error)
-            }
-          }
-          
-        }
-        
-      }
-    }
-    return _atask
-  }
-  
   private func makeDataTaskWeak() -> URLSessionDataTask {
     
     let mySelf : SessionRequest? = self
     
     let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
       
-//      Debug.request(self?.request, response: response, data: data)
+      //      Debug.request(self?.request, response: response, data: data)
       
       if let response = response as? HTTPURLResponse {
         
@@ -247,9 +137,7 @@ public class SessionRequest {
     return _atask
   }
 
-  
-  
-// MARK: - Public
+  // MARK: - Public
   
   public func cancel() {
     self.task.cancel()
@@ -268,3 +156,116 @@ extension SessionRequest: Equatable {
       lhs.requestIdentifier == rhs.requestIdentifier
   }
 }
+
+  
+//  private func makeDataTaskUnowned() -> URLSessionDataTask {
+//
+//    let _atask = session.dataTask(with: request) { [unowned self] (data, response, error) in
+//
+//      if let response = response as? HTTPURLResponse {
+//
+//        let request = self.request
+//
+//        if (checkResponseStatus(status: response.statusCode, expectedStatuses: self.expectedStatuses)) {
+//          debugPrint("Success: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
+//          DispatchQueue.main.async {
+  
+            //call result block as success
+//            self.resultBlock(Result.success((data: data, response: response)))
+//
+//            //call delegate
+//            if let delegate = self.delegate {
+//              delegate.sessionRequestDidComplete(sessionRequest: self)
+//            }
+//
+//          }
+//
+//        } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
+//          debugPrint("Authentication required for: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
+//          DispatchQueue.main.async {
+//            //call delegate
+//            if let delegate = self.delegate {
+//              delegate.sessionRequestRequiresAuthentication(sessionRequest: self)
+//            }
+//          }
+//
+//        } else {
+//          debugPrint("Invalid status code \(response.statusCode) for: \(request.httpMethod!), \(request.url!), \(self.expectedStatuses) ")
+//          DispatchQueue.main.async {
+//
+//            //call result block as error
+//            self.resultBlock(Result.error(Problem.invalidStatusCode))
+//
+//            //call delegate
+//            if let delegate = self.delegate {
+//              delegate.sessionRequestFailed(sessionRequest: self, error: error)
+//            }
+//          }
+//
+//        }
+//
+//      }
+//    }
+//    return _atask
+//  }
+  
+//  private func makeDataTaskWeakOld() -> URLSessionDataTask {
+//
+//    let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
+//
+//      Debug.request(self?.request, response: response, data: data)
+//
+//      if let response = response as? HTTPURLResponse {
+//
+//        guard let strongSelf = self else {
+//          debugPrint("Error: self is deallocated!!")
+//          return
+//        }
+//
+//        let request = strongSelf.request
+//
+//        if (checkResponseStatus(status: response.statusCode, expectedStatuses: (self?.expectedStatuses)!)) {
+//          debugPrint("Success: \(request.httpMethod ?? "no method"), \(String(describing: request.url!) ), \(statusesString((self?.expectedStatuses)!))")
+//          DispatchQueue.main.async {
+//
+//            //call result block as success
+//            strongSelf.resultBlock(Result.success((data: data, response: response)))
+//
+//            //call delegate
+//            if let delegate = strongSelf.delegate {
+//              delegate.sessionRequestDidComplete(sessionRequest: strongSelf)
+//            }
+//
+//          }
+//
+//        } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
+//          debugPrint("Authentication required for: \(request.httpMethod!), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
+//          DispatchQueue.main.async {
+//            //call delegate
+//            if let delegate = strongSelf.delegate {
+//              delegate.sessionRequestRequiresAuthentication(sessionRequest: strongSelf)
+//            }
+//          }
+//
+//        } else {
+//          debugPrint("Invalid status code \(response.statusCode) for: \(String(describing: request.httpMethod!) ), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
+//          DispatchQueue.main.async {
+//
+//            //call result block as error
+//            strongSelf.resultBlock(Result.error(Problem.invalidStatusCode))
+//
+//            //call delegate
+//            if let delegate = strongSelf.delegate {
+//              delegate.sessionRequestFailed(sessionRequest: strongSelf, error: error)
+//            }
+//          }
+//
+//        }
+//
+//      }
+//    }
+//    return _atask
+//  }
+  
+  
+

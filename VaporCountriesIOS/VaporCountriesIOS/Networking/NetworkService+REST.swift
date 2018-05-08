@@ -53,6 +53,4 @@ extension NetworkService {
     return submitRequest(path: path, data: nil, method: .delete, headers: [:], expectedStatuses: [.accepted, .noContent], result)
   }
   
-//MARK: - Test
-  
 }

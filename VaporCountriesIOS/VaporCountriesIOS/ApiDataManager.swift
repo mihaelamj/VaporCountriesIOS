@@ -105,7 +105,22 @@ public final class ApiDataManager {
     }
   }
   
-// MARK: - Test
+// MARK: - Paginated
+  
+  func loadCountriesPaginated(page: Int = 0, limit: Int = 30) {
+    do {
+      try api?.countriesPaginated(page: page, limit: limit).then( { countries in
+        self.countries = countries
+        debugPrint("Fetched Countries no: \(countries.count)")
+      }).error({ error in
+        debugPrint("Error: \(error)")
+      })
+      
+    } catch {
+      // TODO: Handle! How? :/
+      print(error)
+    }
+  }
   
   
 }

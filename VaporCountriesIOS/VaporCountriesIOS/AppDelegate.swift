@@ -27,12 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func testNet() {
     let apiMan = ApiDataManager()
-    apiMan.loadContinents()
-    apiMan.loadCountries()
-    apiMan.loadContinent(id: 3)
-    apiMan.loadCountry(id: 3)
-    apiMan.loadCountryContinent(id: 34)
-    apiMan.loadContinentCountries(id: 3)
+//    apiMan.loadContinents()
+//    apiMan.loadCountries()
+//    apiMan.loadContinent(id: 3)
+//    apiMan.loadCountry(id: 3)
+//    apiMan.loadCountryContinent(id: 34)
+//    apiMan.loadContinentCountries(id: 3)
+    
+    apiMan.loadCountriesPaginated(page: 0, limit: 20)
+    apiMan.loadCountriesPaginated(page: 10, limit: 20)
     
   }
 

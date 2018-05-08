@@ -30,7 +30,7 @@ public extension Api {
     return try netService.get(path: "continets/\(id)")
   }
   
-  /// get all countries
+  /// Get all countries
   public func countries() throws -> Promise<[Country]> {
     return try netService.get(path: "countries")
   }
@@ -40,38 +40,25 @@ public extension Api {
     return try netService.get(path: "countries/\(id)")
   }
   
-  //FIXME: does not work
   /// Get continent for a country
   //http://localhost:8080/api/countries/33/continent
   public func countryContinent(_ id: Int) throws -> Promise<Continent> {
     return try netService.get(path: "countries/\(id)/continent")
   }
   
-  //FIXME: does not work
   //Get countries for a continent
   //http://localhost:8080/api/continets/1/countries
   public func continentCountries(_ id: Int) throws -> Promise<[Country]> {
     return try netService.get(path: "continets/\(id)/countries")
   }
   
-  //TEST:
-  
-//  func get(path: String, _ result: @escaping DataTaskResultBlock) throws {
-//    return submitRequest(path: path, data: nil, method: .get, headers: [:], expectedStatuses: [.ok, .found, .notModified], result)
-//  }
-//  
-  public func countryContinentTest(_ id: Int, _ result: @escaping DataTaskResultBlock) throws {
-    
-    try netService.get(path: "countries/\(id)/continent", { (res) in
-      do {
-        let object = try res.unwrap(to: Continent.self)
-        debugPrint("Continent: \(object)")
-      } catch {
-        fatalError()
-      }
-      
-    })
-    
+  public func countriesPaginated(page: Int = 0, limit: Int = 30) throws -> Promise<[Country]> {
+    let query = Query("countries")
+    query.append(key: "page", value: page)
+    query.append(key: "limit", value: limit)
+    debugPrint("Query: \(query.value)")
+    return try netService.get(path: query.value)
   }
+  
   
 }
