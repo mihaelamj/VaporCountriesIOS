@@ -52,6 +52,8 @@ public extension Api {
     return try netService.get(path: "continets/\(id)/countries")
   }
   
+// MARK: - Paginated
+  
   public func countriesPaginated(page: Int = 0, limit: Int = 30) throws -> Promise<[Country]> {
     let query = Query("countries")
     query.append(key: "page", value: page)
