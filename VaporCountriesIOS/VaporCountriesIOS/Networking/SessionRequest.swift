@@ -73,6 +73,7 @@ public class SessionRequest {
   
   private func makeDataTaskWeak() -> URLSessionDataTask {
     
+    //a hack to make the Swift compiler not deallocate [weak self], really don't know how this works
     let mySelf : SessionRequest? = self
     
     let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
