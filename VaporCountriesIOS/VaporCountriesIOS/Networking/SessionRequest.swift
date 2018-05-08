@@ -37,7 +37,6 @@ protocol SessionRequestProtocol : class {
 }
 
 
-
 // MARK: - Class
 
 //let result: ((_ result: Result<DataResponseTuple>) -> ())

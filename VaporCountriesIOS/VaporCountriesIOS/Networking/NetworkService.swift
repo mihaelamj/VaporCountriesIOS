@@ -131,10 +131,9 @@ open class NetworkService {
 
 // MARK: - Base Actions
   
-//  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {
   public func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatuses : [HTTPStatusCode], _ result: @escaping DataTaskResultBlock ) {
     
-    //build path
+    //build request with path
     var request = makeRequest(with: path)
     
     debugPrint("Path : \(path)")
