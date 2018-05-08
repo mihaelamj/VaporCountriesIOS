@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Specific usage of 
 public class Api {
 
   let netService: NetworkService
