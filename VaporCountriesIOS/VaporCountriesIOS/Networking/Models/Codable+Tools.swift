@@ -10,20 +10,21 @@ import Foundation
 
 
 extension Encodable {
-    
-    func asData() throws -> Data {
-        let encoder = JSONEncoder()
-        return try encoder.encode(self)
-    }
-    
+  
+  func asData() throws -> Data {
+    let encoder = JSONEncoder()
+    return try encoder.encode(self)
+  }
+  
 }
 
 
 extension Data {
-    
-    func asObject<T>(to: T.Type) throws -> T where T: Decodable {
-        let decoder = JSONDecoder()
-        return try decoder.decode(to, from: self)
-    }
-    
+  
+  func asObject<T>(to: T.Type) throws -> T where T: Decodable {
+//    debugPrint("Type: \(T.Self)")
+    let decoder = JSONDecoder()
+    return try decoder.decode(to, from: self)
+  }
+  
 }

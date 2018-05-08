@@ -15,10 +15,22 @@ class Debug {
         Swift.print("Debug: \(message)")
     }
     
-    static func request(_ request: URLRequest, response: URLResponse, data: Data) {
-        print("\n\n\n[\(request.httpMethod ?? "???")] request:\n\(request)")
-        print("\(response.mimeType ?? "???") response:\n\(response)")
-        print("Data:\n\(String(data: data, encoding: .utf8) ?? "unknown")\n\n")
+    static func request(_ request: URLRequest?, response: URLResponse?, data: Data?) {
+      if let request = request {
+        debugPrint("\n\n\n[\(request.httpMethod ?? "???")] request:\n\(request)")
+      } else {
+        debugPrint("request is NIL!")
+      }
+      if let response = response {
+        debugPrint("\(response.mimeType ?? "???") response:\n\(response)")
+      } else {
+        debugPrint("response is NIL!")
+      }
+      if let data = data {
+        debugPrint("Data:\n\(String(data: data, encoding: .utf8) ?? "unknown")\n\n")
+      } else {
+        debugPrint("data is NIL!")
+      }
     }
     
 }

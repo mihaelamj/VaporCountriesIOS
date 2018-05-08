@@ -14,8 +14,6 @@ public class Api {
   
   public init () {
     let url = "http://localhost:8080/api/"
-    //http://localhost:8080/api/continents/
-   // http://localhost:8080/api/continets/
     netService = NetworkService(baseUrl: URL(string: url)!, configuration: URLSessionConfiguration.default)
   }
 }
@@ -42,15 +40,38 @@ public extension Api {
     return try netService.get(path: "countries/\(id)")
   }
   
+  //FIXME: does not work
   /// Get continent for a country
   //http://localhost:8080/api/countries/33/continent
-  public func countryContinent(_ id: Int) throws -> Promise<Country> {
+  public func countryContinent(_ id: Int) throws -> Promise<Continent> {
     return try netService.get(path: "countries/\(id)/continent")
   }
   
+  //FIXME: does not work
   //Get countries for a continent
   //http://localhost:8080/api/continets/1/countries
-  public func continentCountries(_ id: Int) throws -> Promise<Country> {
+  public func continentCountries(_ id: Int) throws -> Promise<[Country]> {
     return try netService.get(path: "continets/\(id)/countries")
   }
+  
+  //TEST:
+  
+//  func get(path: String, _ result: @escaping DataTaskResultBlock) throws {
+//    return submitRequest(path: path, data: nil, method: .get, headers: [:], expectedStatuses: [.ok, .found, .notModified], result)
+//  }
+//  
+  public func countryContinentTest(_ id: Int, _ result: @escaping DataTaskResultBlock) throws {
+    
+    try netService.get(path: "countries/\(id)/continent", { (res) in
+      do {
+        let object = try res.unwrap(to: Continent.self)
+        debugPrint("Continent: \(object)")
+      } catch {
+        fatalError()
+      }
+      
+    })
+    
+  }
+  
 }

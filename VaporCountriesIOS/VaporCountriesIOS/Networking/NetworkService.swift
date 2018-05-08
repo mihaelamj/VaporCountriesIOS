@@ -12,8 +12,8 @@
  //GET /api/countries/:ID/continent
  
  //GET /api/continets
- //GET /api/continents/:continentID
- //GET /api/continents/:continentID/countries
+ //GET /api/continents/:ID
+ //GET /api/continents/:ID/countries
  */
 
 import Foundation
@@ -38,14 +38,10 @@ public typealias Parameters = [String: Any]
 /// A dictionary of headers to apply to a `URLRequest`.
 public typealias HTTPHeaders = [String: String]
 
-//_ result: @escaping ((_ result: Result<DataResponse>) -> ())
-
 /// A network operation response `URLResponse`.
 public typealias DataResponse = (data: Data?, response: URLResponse)
 
 public typealias DataTaskResultBlock = ((_ result: Result<DataResponse>) -> ())
-
-//public typealias DataTaskResultBlock = (_ result: Result<DataResponse>) -> ()
 
 
 open class NetworkService {
@@ -65,7 +61,7 @@ open class NetworkService {
 /// Array of all Requests that are pending Authentication
   var requestsPendingAuthentication = [SessionRequest]()
   
-  // MARK: - private
+  // MARK: - Helper
   
   private static func startOperation() {
     UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -97,6 +93,8 @@ open class NetworkService {
     return NetworkService(baseUrl: url, configuration: configuration)
   }()
   
+  // MARK: - Private
+  
   private func makeRequest(with path: String) -> URLRequest {
     var request: URLRequest
     let parts = path.split(separator: "?").map { String($0) }
@@ -118,6 +116,8 @@ open class NetworkService {
     request.allHTTPHeaderFields = headers
   }
   
+  // MARK: - Public
+  
   private func removeRequest(sessionRequest: SessionRequest) {
     self.requests.removeValue(forKey: sessionRequest.requestIdentifier)
   }
@@ -129,7 +129,6 @@ open class NetworkService {
   }
   
 
-  
 // MARK: - Base Actions
   
 //  func submitRequest(path: String, data: Data? = nil, method: HTTPMethod, headers: HTTPHeaders = [:], expectedStatus : HTTPStatusCode, _ result: @escaping ((_ result: Result<DataResponse>) -> ()) ) {

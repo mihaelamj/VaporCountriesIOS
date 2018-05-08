@@ -123,14 +123,82 @@ public class SessionRequest {
     return _atask
   }
   
-  private func makeDataTaskWeak() -> URLSessionDataTask {
+  private func makeDataTaskWeakOld() -> URLSessionDataTask {
+    
     
     let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
+      
+      Debug.request(self?.request, response: response, data: data)
       
       if let response = response as? HTTPURLResponse {
         
         guard let strongSelf = self else {
           debugPrint("Error: self is deallocated!!")
+          return
+        }
+        
+        let request = strongSelf.request
+        
+        if (checkResponseStatus(status: response.statusCode, expectedStatuses: (self?.expectedStatuses)!)) {
+          debugPrint("Success: \(request.httpMethod ?? "no method"), \(String(describing: request.url!) ), \(statusesString((self?.expectedStatuses)!))")
+          DispatchQueue.main.async {
+            
+            //call result block as success
+            strongSelf.resultBlock(Result.success((data: data, response: response)))
+            
+            //call delegate
+            if let delegate = strongSelf.delegate {
+              delegate.sessionRequestDidComplete(sessionRequest: strongSelf)
+            }
+            
+          }
+          
+        } else if (response.statusCode == HTTPStatusCode.unauthorized.rawValue) {
+          debugPrint("Authentication required for: \(request.httpMethod!), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
+          DispatchQueue.main.async {
+            //call delegate
+            if let delegate = strongSelf.delegate {
+              delegate.sessionRequestRequiresAuthentication(sessionRequest: strongSelf)
+            }
+          }
+          
+        } else {
+          debugPrint("Invalid status code \(response.statusCode) for: \(String(describing: request.httpMethod!) ), \(String(describing: request.url!)), \(statusesString((strongSelf.expectedStatuses)))")
+          DispatchQueue.main.async {
+            
+            //call result block as error
+            strongSelf.resultBlock(Result.error(Problem.invalidStatusCode))
+            
+            //call delegate
+            if let delegate = strongSelf.delegate {
+              delegate.sessionRequestFailed(sessionRequest: strongSelf, error: error)
+            }
+          }
+          
+        }
+        
+      }
+    }
+    return _atask
+  }
+  
+  private func makeDataTaskWeak() -> URLSessionDataTask {
+    
+    let mySelf : SessionRequest? = self
+    
+    let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
+      
+      Debug.request(self?.request, response: response, data: data)
+      
+      if let response = response as? HTTPURLResponse {
+        
+        guard let strongSelf = self else {
+          debugPrint("Error: self is deallocated!!")
+          if (mySelf == nil) {
+            debugPrint("mySelf is NIL")
+          } else {
+            debugPrint("mySelf: \(mySelf)")
+          }
           return
         }
         

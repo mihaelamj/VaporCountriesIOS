@@ -10,6 +10,8 @@ import Foundation
 
 
 extension NetworkService {
+  
+// MARK: - GET
     
     func get<T>(path: String) throws -> Promise<T> where T: Decodable {
         let promise = Promise<T>()
@@ -23,6 +25,8 @@ extension NetworkService {
         }
         return promise
     }
+  
+// MARK: - POST
     
     func post<T>(path: String, data: Data) throws -> Promise<T> where T: Decodable {
         let promise = Promise<T>()
@@ -49,6 +53,8 @@ extension NetworkService {
         }
         return promise
     }
+  
+// MARK: - PUT
     
     func put<T>(path: String, data: Data) throws -> Promise<T> where T: Decodable {
         let promise = Promise<T>()
@@ -75,6 +81,8 @@ extension NetworkService {
         }
         return promise
     }
+  
+// MARK: - DELETE
     
     func delete(path: String) throws -> Promise<Void> {
         let promise = Promise<Void>()
