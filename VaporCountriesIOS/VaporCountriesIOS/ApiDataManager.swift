@@ -66,7 +66,7 @@ public final class ApiDataManager {
     do {
       try api?.countries().then( { countries in
         self.countries = countries
-//        debugPrint("Countries: \(countries)")
+        debugPrint("Fetched Countries no: \(countries.count)")
       }).error({ error in
         debugPrint("Error: \(error)")
       })
@@ -94,7 +94,7 @@ public final class ApiDataManager {
   func loadContinentCountries(id: Int) {
     do {
       try api?.continentCountries(id).then( { countries in
-        debugPrint("Countries: \(countries)")
+        debugPrint("Fetched Countries no: \(countries.count)")
       }).error({ error in
         debugPrint("Error: \(error)")
       })

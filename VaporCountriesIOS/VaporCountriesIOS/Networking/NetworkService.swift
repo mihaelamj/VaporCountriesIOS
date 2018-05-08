@@ -155,6 +155,7 @@ open class NetworkService {
     
     //save networkRequest in dictionary
     self.requests[sessionRequest.requestIdentifier] = sessionRequest
+    debugPrint("The request with ID \(sessionRequest.requestIdentifier) was added to requests.")
 
   }
   
@@ -178,8 +179,9 @@ open class NetworkService {
 extension NetworkService : SessionRequestProtocol {
   
   private func removeRequestFromCollections(sessionRequest: SessionRequest) {
-    if let value = self.requests.removeValue(forKey: sessionRequest.requestIdentifier) {
-      debugPrint("The value \(value) was removed.")
+    let identifier = sessionRequest.requestIdentifier
+    if let value = self.requests.removeValue(forKey: identifier) {
+      debugPrint("The request with ID \(identifier) was removed from requests.")
     }
     
     if let index = self.requestsPendingAuthentication.index(of:sessionRequest) {

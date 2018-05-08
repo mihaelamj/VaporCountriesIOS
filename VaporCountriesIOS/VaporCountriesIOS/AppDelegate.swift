@@ -27,21 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func testNet() {
     let apiMan = ApiDataManager()
-//    apiMan.loadContinents()
-//    apiMan.loadCountries()
-//    apiMan.loadContinent(id: 3)
-//    apiMan.loadCountry(id: 3)
+    apiMan.loadContinents()
+    apiMan.loadCountries()
+    apiMan.loadContinent(id: 3)
+    apiMan.loadCountry(id: 3)
     apiMan.loadCountryContinent(id: 34)
     apiMan.loadContinentCountries(id: 3)
-    
-//    let api = Api()
-//    do {
-//      try api.countryContinentTest(34) { (res) in
-//        debugPrint("res: \(res)")
-//      }
-//    } catch {
-//      print(error)
-//    }
     
   }
 

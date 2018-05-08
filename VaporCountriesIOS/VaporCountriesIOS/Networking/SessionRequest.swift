@@ -188,7 +188,7 @@ public class SessionRequest {
     
     let _atask = session.dataTask(with: request) { [weak self] (data, response, error) in
       
-      Debug.request(self?.request, response: response, data: data)
+//      Debug.request(self?.request, response: response, data: data)
       
       if let response = response as? HTTPURLResponse {
         
@@ -197,7 +197,7 @@ public class SessionRequest {
           if (mySelf == nil) {
             debugPrint("mySelf is NIL")
           } else {
-            debugPrint("mySelf: \(mySelf)")
+            debugPrint("mySelf: \(mySelf!)")
           }
           return
         }
