@@ -133,8 +133,8 @@
 			children = (
 				A962098920A0BF7F00CB8E49 /* Model */,
 				A962097A20A0BF2600CB8E49 /* HTTPStatus */,
-				A962099920A0BFEC00CB8E49 /* SessionRequest.swift */,
 				A962099A20A0BFEC00CB8E49 /* NetworkService.swift */,
+				A962099920A0BFEC00CB8E49 /* SessionRequest.swift */,
 				A9B792B420A0F05500F1814E /* NetworkService+REST.swift */,
 				A9BE7ABF20A0FFB700F8D728 /* NetworkService+Promise.swift */,
 				A9BE7ABE20A0FD8800F8D728 /* API */,

@@ -180,7 +180,7 @@ extension NetworkService : SessionRequestProtocol {
   private func removeRequestFromCollections(sessionRequest: SessionRequest) {
     let identifier = sessionRequest.requestIdentifier
     if let value = self.requests.removeValue(forKey: identifier) {
-      debugPrint("The request with ID \(identifier) was removed from requests.")
+      debugPrint("The request with ID \(identifier) was removed from requests \(value).")
     }
     
     if let index = self.requestsPendingAuthentication.index(of:sessionRequest) {
